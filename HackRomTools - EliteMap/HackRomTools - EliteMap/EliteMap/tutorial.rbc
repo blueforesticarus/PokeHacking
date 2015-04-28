@@ -1,0 +1,7 @@
+#org 0x800000
+message 0x800100
+boxset 0x2
+end
+#org 0x800100
+= Hello World!
+

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<?xml:stylesheet type="text/xsl" href="library.xsl"?>
+
+<emlib name="EliteMap Library">
+
+<!--
+ <readme>
+  Insert readme here.
+ </readme>
+-->
+
+ <library name="New Pokemon">
+  <item id="am2" name="Armored Mewtwo" aka="Mewtwo" author="Baro" base="Mewtwo from Fire Red" fact="Actually a work in progress, hence the golden armor" />
+  <item id="Badger" name="Dancing Badger" aka="Badgerus Weebelius" author="Kyoufu Kawa" base="None" fact='"Now all we need is a mushroom, snake and possibly Elrond." -- Trashykins' />
+ </library>
+
+ <library name="Originals">
+  <item id="AlexRyan" name="Alex &amp; Ryan" aka="Kunio &amp; Riki" author="Kyoufu Kawa" base="River City Ransom" fact="Based on an MSN conversation." />
+  <item id="Dave" name="Dave" aka="T.J., Andy, Tyler" author="Kyoufu Kawa" base="Pokemon Obsidian" fact="" />
+  <item id="Jackie" name="Jackie" aka="Anya, Sofie, Rydain" author="Kyoufu Kawa" base="Pokemon Obsidian" fact="Not to be confused with Jackie-chan" />
+ </library>
+
+ <library name="Modifications">
+  <item id="Dr. Wily" name="Dr. Wily" author="Kyoufu Kawa" base="Blaine from Fire Red" fact="There is another version of this sprite based on a Blaine recolor from Ruby by Kawa" />
+  <item id="Jesus" name="Jesus F. Christ" aka="teh Messiah" author="Kyoufu Kawa" base="Wallace from Ruby" fact="One of Kawa's first." />
+  <item id="Jackson" name="Micheal Jackson" aka="Whacko Jacko" author="Kyoufu Kawa" base="Archie from Ruby" fact="Based on a concept by Mattchan. I can out-draw you anyday!" />
+  <item id="Ryouga" name="Ryouga Hibiki" aka="P-chan" author="Kyoufu Kawa" base="Ranger from Fire Red" fact="The result of boredom." />
+  <item id="Catgirl" name="Sakibou-chan" aka="Catspaw, the Helmeted Rodent hostess neko" author="Majin BlueDragon, tweaked by Kyoufu Kawa" base="Swimmer" fact="It took Kawa months to notice it used to be a swimmer, even though he worked on this sprite himself." />
+ </library>
+
+ <library name="Avatars">
+  <item id="Baro" name="Baro" aka="" author="Baro" base="Gary from Fire Red" fact="Baro's better than we expected. Hatstand work." />
+  <item id="Bouche" name="Bouche" aka="Andrew Lim" author="Kyoufu Kawa" base="Guitarist from Fire Red" fact="Why do people keep thinking he's drooling toothpaste?" />
+  <item id="JChan" name="Jackie-chan" aka="Jay" author="Kyoufu Kawa" base="Beauty from Ruby" fact="She normally wears much more colorful clothes but there's a 16-color limit." />
+  <item id="Kawa" name="Kyoufu Kawa" aka="The Fuzzy Evil" author="Kyoufu Kawa" base="Gary from Fire Red" fact="There are three distinct Gary images in the game. Kawa wonders why." />
+  <item id="Markus" name="Markus" aka="D-Kiddy" author="Kyoufu Kawa" base="Magma Executive" fact="Made after Ailure noticed Markus' old avatar seemed younger than Bouche's, even though Markus is older." />
+  <item id="Mattchan" name="Neko-Mattchan" aka="Interdpth" author="Interdpth" base="Junior/Senior from Ruby" fact="none" />
+  <item id="Trashykins" name="Trashykins" aka="Rick Trimble" author="Kyoufu Kawa" base="Unidentified enemy from Fire Red" fact="none" />
+ </library>
+
+ <library name="Ports">
+  <item id="Brock" name="Brock" aka="Takeshi" author="Majin BlueDragon" fact="none" />
+  <item id="Hiro" name="Hiro" aka="" author="Majin BlueDragon" fact="none" />
+  <item id="PokeManiac" name="PokeManiac" author="Kyoufu Kawa" fact="When Kawa ports a sprite to Pokemon Advance, they get slightly taller due to 8 extra pixels (56 to 64)" />
+ </library>
+
+ <lastupdate timestamp="1:26 PM 5/11/2005" />
+</emlib>

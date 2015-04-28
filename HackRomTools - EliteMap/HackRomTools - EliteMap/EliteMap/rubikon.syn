@@ -1,0 +1,102 @@
+; TextPad definition file for Rubikon
+;
+; Requires TextPad 4.7 or later.
+
+C=1
+
+[Syntax]
+Namespace1 = 6
+IgnoreCase = No
+KeyWordLength =
+BracketChars =
+OperatorChars =
+PreprocStart = #
+HexPrefix = 0x
+SyntaxStart = 
+SyntaxEnd = 
+CommentStart = /*
+CommentEnd = */
+CommentStartAlt =
+CommentEndAlt =
+SingleComment = '
+SingleCommentCol =
+SingleCommentAlt =
+SingleCommentColAlt =
+SingleCommentEsc =
+StringsSpanLines = No
+StringStart = = 
+StringEnd = 
+StringAlt = 
+StringEsc =
+CharStart = 
+CharEnd = 
+CharEsc =
+
+[Keywords 1]
+nop
+end
+return
+call
+goto
+jumpstd
+callstd
+killscript
+setbyte
+loadpointer
+writebytetooffset
+loadbytefrompointer
+copyscriptbanks
+copybyte
+setvar
+copvar
+copyvarifnotzero
+comparevars
+comparevartobyte
+comparevartofarbyte
+comparefarbytetovar
+comparefarbytetobyte
+comparefarbytetofarbyte
+compare
+callasm
+special
+special2
+pause
+setflag
+clearflag
+checkflag
+cry
+fanfare
+waitfanfare
+playsound
+fadedefault
+fadesound
+fadeout
+fadein
+warp
+checkitem
+applymovement
+movesprite
+faceplayer
+trainerbattle
+jingle
+lock
+release
+multi
+givepokemon
+pokemart
+fadescreen
+checkgender
+setweather
+doweather
+
+[Keywords 2]
+boxset
+break
+break2
+
+[Keywords 3]
+wildbattle
+giveitem
+if
+message
+msgbox

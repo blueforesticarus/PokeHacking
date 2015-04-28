@@ -1,0 +1,425 @@
+<html><head><title>Rubikon reference</title></head>
+	<BODY bgColor="#babbe6" link="black" text="black" vLink="black">
+		<CENTER>
+			<TABLE bgColor="#9698d6" border="0" cellPadding=1 width="99%">
+	  		<TBODY>
+				  <TR>
+				    <TD>
+      				<TABLE bgColor="#dcddf8" border="0" cellPadding="10" width="100%">
+				        <TBODY>
+					        <TR>
+					          <TD style="CURSOR: default">
+					          	<FONT FACE="Verdana" size="2">
+
+					          	<h2><img src=rubikonicon.gif align=left> RubiKode<sup>tm</sup> commands</h2>
+
+It's highly recommended to type commands exclusively in lowercase, and anything #defined in caps.<p>
+All examples in this manual assume you include std.rbh in the compilation process. This can be done by checking "Include STD" in Diamond Cutter, or simply adding "stb.rbh" to your batch file, if you use one.<p>
+You can also compile <i>many</i> files in one go. The headers are included in the same way:<br>
+<font face="Courier New">rbc /o myrom.gba std.rbh script1.rbc script2.rbc script3.rbc</font><p>
+
+<font size=4><b>Preproc directives</b></font><br>
+
+<br><font size=3><b>#include</b></font><br>
+<font face="Courier New">#include sFile</font><br>
+Include another file in the compilation process. Double quotes are automatically removed.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">#include "mydefs.rbh"</font><br>
+
+<br><font size=3><b>#define</b></font><br>
+<font face="Courier New">#define sSymbol iNumber</font><br>
+Allows you to define symbols to replace numbers. Only numbers are allowed but they can be any size from byte to dword. It's good practice to use uppercase symbol names.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">#define MASTERBALL 1</font><br>
+
+<br><font size=3><b>#org</b></font><br>
+Aliases: <i>#seek</i><br>
+Set the compiler's write cursor to the specified location in ROM.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">#org 0x605040 'continue (or start) writing somewhere in the empty space.</font><br>
+
+<br><font size=3><b>#autobank</b></font><br>
+<font face="Courier New">#autobank [on|off]</font><br>
+Some might prefer to include the trailing 0x08 in pointers, others may not. When turned on, the extra 0x08 is automajickally added<br>
+to any pointer. Only #org is not affected since, as a file, the ROM always starts at bank 0x00.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">#autobank on<br>
+message 0x604020 'becomes 0F00 08604020<br>
+#autobank off<br>
+message 0x604020 'becomes 0F00 00604020, which is a bad thing.</font><br>
+
+<br><font size=3><b>#raw</b></font><br>
+Aliases: <i>#binary</i><br>
+<font face="Courier New">#raw aLot</font><br>
+Inserts a load of raw data into the ROM. This can be used for unsupported commands as well as movement data. To determine which data type to use, simply add in the type's name before any values that follow. The sequence <i>always</i> defaults to byte. You can use hex prefixes (0x and &H) if you must, but this command does not need them.<br>
+Possible data types are:<br>
+- byte (also char)<br>
+- word (also int or integer)<br>
+- dword (also long)<br>
+- pointer (also ptr)<br>
+<br><font size=1>Example:</font><br><font face="Courier New">#binary 12 69 word 1234 dword 12345678 pointer 0xABCDEF</font><br><br>
+This example would output two bytes, one word, one dword and a pointer. Note how the pointer is affected by the AutoBank system and the DWord is not.<br>
+
+<br><font size=3><b>=</b></font><br>
+<font face="Courier New">= sText</font><br>
+Raw text inserter.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">= Hello! I'm so happy!\cHappy happy happy...</font><br>
+
+
+
+
+<br><font size=4><b>General commands</b></font><br>
+
+
+
+<br><font size=3><b>nop (00, 01 and C6)</b></font><br>
+<font face="Courier New">nop</font><br>
+Absolutely nothing.<br>
+
+<br><font size=3><b>end (02)</b></font><br>
+<font face="Courier New">end</font><br>
+End execution of the script.<br>
+
+<br><font size=3><b>return (03)</b></font><br>
+<font face="Courier New">return</font><br>
+Return from where you were called from. Kinda like Basic's <i>GOSUB...RETURN</i> system.<br>
+
+<br><font size=3><b>call (04)</b></font><br>
+<font face="Courier New">call ptrTarget</font><br>
+Call another script. You can return from there with Return.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">call JUMP_BAGISFULL</font><br>
+
+<br><font size=3><b>goto (05)</b></font><br>
+<font face="Courier New">goto ptrTarget</font><br>
+Continue execution from ptrTarget. Return is not allowed.<br>
+
+<br><font size=3><b>if (06)</b></font><br>
+<font face="Courier New">if bCondition action ptrTarget</font><br>
+If the last comparison returned a certain value, jump or goto another script. Action can be "goto" or "gosub". If no action is specified "gosub" is assumed and Return can be used.<br>
+Possible condition values are:<br>
+00 - Lower (<<), also FALSE<br>
+01 - Equal (==), also TRUE<br>
+02 - Bigger (>>)<br>
+03 - Lower or equal (>=)<br>
+04 - Bigger or equal (<=)<br>
+05 - Not equal (!=)
+<br><font size=1>Example:</font><br><font face="Courier New">compare LASTRESULT 0x4<br>if TRUE goto JUMP_BAGISFULL</font><br>
+
+<br><font size=3><b>boxset (09)</b></font><br>
+Aliases: <i>callstd</i><br>
+<font face="Courier New">boxset bValue</font><br>
+Calls a standard function. Mostly used to display dialogue with parameters 0x04 and 0x06 or yes/no questions with 0x05.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">message 0x604000 'normal stuff<br>
+boxset 4 'don't close after keypress<br>
+message 0x604020 'question<br>
+boxset BOXSET_YESNO<br>
+if LASTRESULT NO 0x600020 'goto "no" handler<br>
+'"yes" handler goes here<br>
+...<br>
+break<br>
+#org 0x600020<br>
+'"no" handler goes here<br>
+...<br>
+break</font><br>
+
+<br><font size=3><b>message (0F)</b></font><br>
+Aliases: <i>loadpointer</i><br>
+<font face="Courier New">message lPointer</font><br>
+<font face="Courier New">loadpointer bBank lPointer</font><br>
+Prepares a pointer for use by commands like BoxSet. Mostly used to load dialogue text. The LoadPointer alias has been added for technical correctness.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">message 0x604020<br>
+boxset 0x06 'close after button press</font><br>
+
+<br><font size=3><b>setvar (16)</b></font><br>
+Aliases: <i>setvar1</i><br>
+<font face="Courier New">setvar iVar iValue</font><br>
+Set a variable to a certain value.<br>
+Analogous to Basic's <i>A = 4</i>.<br>
+
+<br><font size=3><b>copyvar (19)</b></font><br>
+Aliases: <i>setvar2</i><br>
+<font face="Courier New">copyvar iVar iVar</font><br>
+Copy the value of one variable to another.<br>
+Analogous to Basic's <i>A = B</i>.<br>
+
+<br><font size=3><b>copyvarifnotzero (1A)</b></font><br>
+Aliases: <i>setvar3</i><br>
+<font face="Courier New">copyvarifnotzero iVar iVar</font><br>
+Copy the value of one variable to another, but only if the new variable's value is not zero.<br>
+Analogous to Basic's <i>IF B > 0 THEN A = B</i>.<br>
+
+<br><font size=3><b>compare (21)</b></font><br>
+<font face="Courier New">compare iVar iValue</font><br>
+Compares a variable with a value. Used in conjunction with <i>if</i> and mostly with LASTRESULT as a parameter.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">compare LASTRESULT 0x4<br>if TRUE JUMP_BAGISFULL</font><br>
+
+<br><font size=3><b>special (25)</b></font><br>
+<font face="Courier New">special iEvent</font><br>
+Triggers a special event to occur.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">special SPECIAL_WALLYCATCH 'Play back movie of Wally catching a Ralts.</font><br>
+
+<br><font size=3><b>special2 (26)</b></font><br>
+<font face="Courier New">special2 iVar iIndex</font><br>
+Check special stuff? Is used for rematch battles and stuff.<br>
+
+<br><font size=3><b>pause (28)</b></font><br>
+<font face="Courier New">pause iVal</font><br>
+
+<br><font size=3><b>setflag (29)</b></font><br>
+<font face="Courier New">setflag iFlag</font><br>
+Sets a flag.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">setflag 0x64<br>
+checkflag 0x64<br>
+compare LASTRESULT YES<br>
+if 1 0x600020 'goto "yes" handler<br>
+'"no" handler goes here<br>
+...<br>
+break<br>
+#org 0x600020<br>
+'"yes" handler goes here<br>
+...<br>
+break</font><br>
+
+<br><font size=3><b>clearflag (2A)</b></font><br>
+<font face="Courier New">clearflag iFlag</b></font><br>
+Clears a flag.<br>
+
+<br><font size=3><b>checkflag (2B)</b></font><br>
+<font face="Courier New">checkflag iFlag</font><br>
+Checks if iFlag is set. For an example, see <i>setflag</i>.<br>
+
+<br><font size=3><b>cry (30)</b></font><br>
+<font face="Courier New">cry iSpecies iUnknown</font><br>
+Plays back the cry of the specified Pokémon. Normally used for tame Pokémon such as the movers in R/S.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">cry PKMN_PIKACHU</font><br>
+
+<br><font size=3><b>fanfare (31)</b></font><br>
+<font face="Courier New">fanfare iSong</font><br>
+Play back a song as a jingle.<br>
+
+<br><font size=3><b>waitfanfare (32)</b></font><br>
+<font face="Courier New">waitfanfare</font><br>
+Wait for the jingle started by Fanfare to finish<br>
+
+<br><font size=3><b>playsound (33)</b></font><br>
+<font face="Courier New">playsound iIndex</font><br>
+Abruptly switch to another music track.<br>
+
+<br><font size=3><b>fadedefault (35)</b></font><br>
+<font face="Courier New">fadedefault</font><br>
+Gently switch to the map's default music track.<br>
+
+<br><font size=3><b>fadesound (36)</b></font><br>
+<font face="Courier New">fadesound iIndex</font><br>
+Gently switch to another music track.<br>
+
+<br><font size=3><b>fadeout (37)</b></font><br>
+<font face="Courier New">fadeout</font><br>
+Gently fade out the currently playing track.<br>
+
+<br><font size=3><b>fadein (38)</b></font><br>
+<font face="Courier New">fadein</font><br>
+Gently fade the currently playing track back in.<br>
+
+<br><font size=3><b>warp (39)</b></font><br>
+<font face="Courier New">warp bBank bMap bExit</font><br>
+
+<br><font size=3><b>checkitem (47)</b></font><br>
+<font face="Courier New">checkitem iItem</font><br>
+Checks if the player carries at least one instance of the specified item.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">checkitem ITEM_MAXPOTION<br>
+compare LASTRESULT YES<br>
+if TRUE 0x604020</font><br>
+
+<br><font size=3><b>applymovement (4F)</b></font><br>
+<font face="Courier New">applymovement iSprite lPointer</font><br>
+Applies the movement data at lPointer to the specified sprite.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">movement 0x5 0x604020<br>
+wait 0x0 'wait for movement to complete</font><br>
+
+<br><font size=3><b>movesprite (57)</b></font><br>
+<font face="Courier New">movesprite iIndex iX iY</font><br>
+TODO: Write this.<br>
+
+<br><font size=3><b>faceplayer (5A)</b></font><br>
+<font face="Courier New">faceplayer</font><br>
+Turns the caller towards the player.<br>
+
+<br><font size=3><b>trainerbattle (5C)</b></font><br>
+<font face="Courier New">trainerbattle bKind iBattle ptrIntro ptrDefeat</font><br>
+Starts a trainer battle.<br>
+bKind is 0x00 for normal battles, 0x04 for 2-on-2 and 0x05 for rematches.<br>
+You'll need to add an extra parameter, ptrSpecial, for 2-on-2 battles and gym leaders.<br>
+2-on-2 battles require ptrSpecial to point to extra dialogue, and gym leaders need it to point to more code.<br>
+2-on-2 dialogue should tell the player that he or she needs at least two Pokémon to fight.<br>
+Gym leaders should give defeat gifts like badges. Check out your favorite leader in Scripted 1.0.1 to see an example of the gym gift code.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">trainerbattle 0 MYBATTLEINTRO MYBATTLEDEFEAT<br>
+message MYBATTLEAFTERWARDS<br>
+boxset 4</font><br>
+
+<br><font size=3><b>jingle (69)</b></font><br>
+<font face="Courier New">jingle</font><br>
+Plays a little sound effect.<br>
+
+<br><font size=3><b>lock (6A)</b></font><br>
+<font face="Courier New">lock</font><br>
+Locks down movement for the caller.<br>
+
+<br><font size=3><b>release (6C)</b></font><br>
+<font face="Courier New">release</font><br>
+Resumes movement for the caller.<br>
+
+<br><font size=3><b>multi (6F)</b></font><br>
+<font face="Courier New">multi bLeft bTop bList bCancel</font><br>
+Puts up a list of choices for the player to make. Available choices depend on the value of bList. bCancel determines wether the player can press the B button to select the last item, if yes the last item should be "Cancel". As always, the player's choice is stored in LASTRESULT.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">message 0x604020 '"What city do you like best?"<br>
+choice 2 2 13 0 'items available are littleroot, slateport and lilycove<br>
+compare LASTRESULT 1<br>
+if 0 0x600030 'goto littleroot handler<br>
+if 1 0x600050 'goto slateport handler<br>
+'lilycove handler starts right here, no "if LASTRESULT 3" needed.</font><br>
+
+<br><font size=3><b>givepokemon (79)</b></font><br>
+<font face="Courier New">givepokemon iSpecies bLevel iItem</font><br>
+Gives the player a Pokémon of any given species and level, holding an item if iItem > 0.<br>
+
+<br><font size=3><b>pokemart (86)</b></font><br>
+<font face="Courier New">pokemart ptrItemList</font><br>
+Opens the PokéMart shop system with the item/price list found at ptrItemList.<br>
+For more information on price lists, check the big pile of doggie doo.<br>
+
+<br><font size=3><b>fadescreen (97)</b></font><br>
+<font face="Courier New">fadescreen bInOrOut</font><br>
+Fades the screen in or out.<br>
+
+<br><font size=3><b>checkgender (A0)</b></font><br>
+<font face="Courier New">checkgender</font><br>
+Simply puts 1 in in LASTRESULT if the player is a girl or 0 if he's a boy.<br>
+
+<br><font size=3><b>setmaptile (A2)</b></font><br>
+<font face="Courier New">setmaptile iX iY iTileNo iTileAttr</font><br>
+Sets a tile on the map. You must somehow refresh that part, can be done by scrolling out of view and back in or by calling this command from a Level Script.<br>
+
+<br><font size=3><b>setweather (A4)</b></font><br>
+<font face="Courier New">setweather bWeather</font><br>
+Gently changes the weather.<br>
+Values tested with results:<br>
+00 - Nothing<br>
+03 - Rain<br>
+04 - Snow, doesn't stay long.<br>
+05 - Thunderstorm<br>
+06 - Fog<br>
+07 - Ash<br>
+08 - Sandstorm<br>
+09 - Different fog<br>
+0A - Light fog<br>
+0B - Darkness (here's your nighttime effect!)<br>
+0C - Hot sun<br>
+0D - Thunderstorm<br>
+0E - Underwater<br>
+0F - Nothing<br>
+
+<br><font size=3><b>doweather (A5)</b></font><br>
+<font face="Courier New">doweather</font><br>
+Triggers the weather change set with <i>setweather</i>.<br>
+
+
+
+<br><font size=4><b>Constructs</b></font><br>
+
+
+
+<br><font size=3><b>wildbattle</b></font><br>
+<font face="Courier New">wildbattle iSpecies iLevel bStyle</font><br>
+Originally a true command, now a construct.<br>
+Style can be any of these:<br>
+0 normal wild pokémon battle<br>
+1 ground legend battle, zigzag wipe<br>
+2 grass legend battle, zigzag wipe<br>
+3 boxtwirl wiped battle<br>
+<br><font size=1>Example:</font><br><font face="Courier New">wildbattle 0x196 70 3 'fight a level 70 Rayquaza!</font><br>
+
+<br><font size=3><b>giveitem</b></font><br>
+<font face="Courier New">giveitem iItem iQuantity</font><br>
+Gives the player an item.<br>
+This is a construct that converts to two <i>setvarifnotzero</i> commands.<br>
+<br><font size=1>Example:</font><br><font face="Courier New">giveitem ITEM_SODAPOP 1</font><br>
+
+
+
+<br><font size=4><b>Hardcore commands</b></font><br>
+
+
+
+<br><font size=3><b>jumpstd (08)</b></font><br>
+<font face="Courier New">jumpstd bValue</font><br>
+Jumps to a standard function. Kinda like BoxSet, only with slightly different logic, like Basic's <i>GOSUB</i> compared to <i>GOTO</i>.<br>
+
+<br><font size=3><b>comparevars (1B)</b></font><br>
+<font face="Courier New">comparevars iVar iVar</font><br>
+Compares a variable with another variable.<br>
+
+<br><font size=3><b>comparevartobyte (1C)</b></font><br>
+<font face="Courier New">comparevartobyte iVar bVal</font><br>
+Compares a variable with a byte value.<br>
+
+<br><font size=3><b>comparevartofarbyte (1D)</b></font><br>
+<font face="Courier New">comparevartofarbyte iVar lPointer</font><br>
+Compares a variable with a byte at some location.<br>
+
+<br><font size=3><b>comparefarbytetovar (1E)</b></font><br>
+<font face="Courier New">comparefarbytetovar lPointer iVar</font><br>
+Compares a byte at some location with a variable.<br>
+
+<br><font size=3><b>comparefarbytetobyte (1F)</b></font><br>
+<font face="Courier New">comparefarbytetobyte lPointer bVal</font><br>
+Compares a byte at some location with a byte value.<br>
+
+<br><font size=3><b>comparefarbytetofarbyte (20)</b></font><br>
+<font face="Courier New">comparefarbytetofarbyte lPointer lPointer</font><br>
+Compares a byte at some location with another byte at some location.<br>
+
+
+
+<br><font size=4><b>Predefined variables and constants in STD.RBH</b></font><br>
+
+
+
+<br><font size=3><b>B_YES, B_NO, B_TRUE, B_FALSE, B_BOY and B_GIRL</b></font><br>
+I like booleans. They're comfy and easy to #define.<br>
+
+<br><font size=3><b>B_<<, B_==, B_>>, B_<=, B_>= and B_!=</b></font><br>
+Like B_TRUE and B_FALSE above, but for experienced coders who want full logical power.<br>
+
+<br><font size=3><b>BOXSET_DONTCLOSE, BOXSET_YESNO and BOXSET_NORMAL</b></font><br>
+The three most common BoxSet parameters.<br>
+
+<br><font size=3><b>MENU_PARTY, MENU_POKEDEX and MENU_NAVIGATOR</b></font><br>
+SetFlag parameters to enable their respective menu items. Can also be cleared to, for example, make Grunts steal your kit.<br>
+
+<br><font size=3><b>0x800D - LASTRESULT</b></font><br>
+Nearly every time something is checked, the answer is stored in this variable.<br>
+
+<br><font size=3><b>SPRITEMOVE_INDEX<br>SPRITEMOVE_NEWXPOS<br>SPRITEMOVE_NEWYPOS</b></font><br>
+Combine these three with SetVar to move a sprite to a proper position on the map.<br>
+This is used in Littleroot to move Mom to either the left or right hand house door depending on the player's gender.<br>
+
+<br><font size=3><b>APPLYMOVE_PLAYER</b></font><br>
+Because it makes more sense than 0xFF. Use it in ApplyMovement to control the player.<br>
+
+<br><font size=3><b>JUMP_BAGISFULL</b></font><br>
+A predefined label for Ruby to write ye olde standard error message when the player's inventory is completely filled. See <i>goto</i> for an example. Assumes Autobanking is ON.<br>
+
+   <hr>
+   <font size=1>
+    Last updated: 22-12-04
+   </font>
+
+            					</FONT>
+            				</TD>
+            			</TR>
+            		</TBODY>
+            	</TABLE>
+						</TD>
+          </TR>
+				</TBODY>
+			</TABLE>
+		</CENTER>
+	</BODY>
+</HTML>

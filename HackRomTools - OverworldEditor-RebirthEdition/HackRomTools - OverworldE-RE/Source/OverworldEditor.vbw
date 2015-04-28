@@ -1,0 +1,7 @@
+frmOverworldEditor = 65, -20, 965, 622, C, 168, 5, 716, 669, C
+modGraphicEditing = 52, 95, 929, 598, C
+frmAbout = 89, 78, 907, 443, I, 192, 81, 719, 443, C
+clsCommonDialog = 68, 87, 927, 622, C
+BMPSupport = 54, 37, 860, 605, C
+frmBMPImport = 142, 17, 931, 602, C, 230, 120, 599, 482, C
+modMain = 105, 34, 897, 522, C

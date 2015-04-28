@@ -1,0 +1,45 @@
+#define BOXSET_DONTCLOSE 4
+#define BOXSET_YESNO 5
+#define BOXSET_NORMAL 6
+
+#define LASTRESULT &H800D
+
+#define SPRITEMOVE_INDEX &H8008
+#define SPRITEMOVE_NEWXPOS &H8009
+#define SPRITEMOVE_NEWYPOS &H800A
+
+#define APPLYMOVE_PLAYER &HFF
+
+#define SPECIAL_CHOOSEPOKEMON &H9C
+#define SPECIAL_WALLYCATCH &H9D
+
+#define B_TRUE 1
+#define B_FALSE 0
+#define B_YES 1
+#define B_NO 0
+#define B_GIRL 1
+#define B_BOY 0
+
+'-----------------------------------------
+'NEW! Menu item enabling flags!
+'For example, to enable the Party screen,
+'setflag MENU_PARTY
+
+#define MENU_PARTY &H800
+#define MENU_POKEDEX &H801
+#define MENU_NAVIGATOR &H802
+'-----------------------------------------
+
+'Extra conditions for IF (06)
+#define B_<< 0 'lower
+#define B_== 1 'equal
+#define B_>> 2 'higher
+#define B_<= 3 'lower or equal
+#define B_>= 4 'higher or equal
+#define B_!= 5 'not equal
+
+#define JUMP_BAGISFULL &H1A029B 'Warning - Assumes Autobank is ON and you're using Ruby.
+
+#autobank on
+
+

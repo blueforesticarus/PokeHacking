@@ -1,0 +1,60 @@
+'This code mimics the Rich Boy at the forest entrance.
+
+#define MYBATTLE 0x88
+#define MYREMATCH 0x88 'Most rematches use different indices.
+#define MYREMATCHCHECK 0x39
+
+#org 0x14F1DE
+
+trainerbattle 0x0 MYBATTLE 0x1B88D4 0x1B8911
+special2 LASTRESULT MYREMATCHCHECK
+compare LASTRESULT B_YES
+if B_TRUE 0xC00200
+message 0x1B8925
+boxset 6
+break
+
+#org 0x14F205
+trainerbattle 0x5 MYREMATCH 0x1B895E 0x1B899E
+message 0x1B89C0
+boxset 6
+break
+
+'Text blocks go here
+#org 0x1B88D4
+= Oh, sure, I'll accept your challenge.\nI have a lot of money.
+#org 0x1B8911
+= Why couldn't I win?
+#org 0x1B8925
+= There are some things money can't buy.\nThat's POKÈMON...
+#org 0x1B895E
+= After I lost to you, I learned a bunch\nof things about POKÈMON.
+#org 0x1B899E
+= I lost again?\nWhy couldn't I win?
+#org 0x1B89C0
+I'm fabulously wealthy, but I can't\nseem to win at POKÈMON...\pIt's so deep, the world of POKÈMON...
+
+'------------------------------------
+'- Original code from scripted.exe. -
+'- Compare freely and be amazed ;)  -
+'------------------------------------
+'14F1DE: (5C) trainerbattle 0x0, 0x88, 0x81B88D4, 0x81B8911
+'14F1EC: (26) cmd26 $800D, 0x39
+'14F1F1: (21) compare $800D, 1
+'14F1F6: (06) if compare(true) branch 0x814F205
+'14F1FC: (0F) msgbox 0x0, 0x81B8925
+'14F202: (09) boxset 0x6
+'14F204: (02) break 
+'---------
+'14F205: (5C) trainerbattle 0x5, 0x88, 0x81B895E, 0x81B899E
+'14F213: (0F) msgbox 0x0, 0x81B89C0
+'14F219: (09) boxset 0x6
+'14F21B: (02) break 
+'
+'Strings:
+'81B88D4: Oh, sure, I'll accept your challenge.\nI have a lot of money.
+'81B8911: Why couldn't I win?
+'81B8925: There are some things money can't buy.\nThat's POKÈMON...
+'81B895E: After I lost to you, I learned a bunch\nof things about POKÈMON.
+'81B899E: I lost again?\nWhy couldn't I win?
+'81B89C0: I'm fabulously wealthy, but I can't\nseem to win at POKÈMON...\pIt's so deep, the world of POKÈMON...

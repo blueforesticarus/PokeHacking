@@ -1,0 +1,18 @@
+'This code mimics the Rich Boy at the forest entrance.
+'Same as richboy.rbc, only with "proper" command names
+'and without any defines or text.
+
+#org 0x14F1DE
+trainerbattle 0x0 0x88 0x1B88D4 0x1B8911
+special2 0x800D 0x39
+compare 0x800D 1
+if 1 0xC00200
+loadpointer 0 0x1B8925
+callstd 6
+end
+
+#org 0x14F205
+trainerbattle 0x5 0x88 0x1B895E 0x1B899E
+loadpointer 0 0x1B89C0
+callstd 6
+end
